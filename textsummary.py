@@ -30,11 +30,28 @@ summarizer = pipeline(
 import gradio as gr
 
 gr.close_all()
-# We create a function bcs gradio needs a function to work with
 
-def summary(input):
-    output = summarizer(input)
+# We create a function bcs gradio needs a function to work with
+def summary(text):
+    output = summarizer(text)
     return output[0]["summary_text"]
 
-interfacee = gr.Interface(fn=summary, inputs="text", outputs="text")
-interfacee.launch()
+interface = gr.Interface(
+    fn=summary,
+    inputs=gr.Textbox(
+        label="Input Text",
+        placeholder="Paste your long text here...",
+        lines=8
+    ),
+    outputs=gr.Textbox(
+        label="Summarized Text",
+        placeholder="Summary will appear here...",
+        lines=8
+    ),
+    title="Text Summarization App",
+    description="Paste a long paragraph and get a short summary using BART Large CNN model.",
+    allow_flagging="never"
+)
+
+interface.launch()
+
